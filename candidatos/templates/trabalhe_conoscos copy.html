@@ -1,0 +1,333 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}
+Trabalhe Conosco
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Evento quando o campo de CEP perde o foco (quando o usuário sai do campo)
+        $('#id_cep').blur(function() {
+            var cep = $(this).val().replace(/\D/g, '');
+
+            // Verifica se o CEP tem exatamente 8 dígitos
+            if (cep.length === 8) {
+                // Consulta a API ViaCEP
+                $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(dados) {
+                    if (!('erro' in dados)) {
+                        // Preenche os campos de endereço automaticamente
+                        $('#id_endereco').val(dados.logradouro);
+                        $('#id_bairro').val(dados.bairro);
+                        $('#id_cidade').val(dados.localidade);
+                        $('#id_estado').val(dados.uf).change();
+                    } else {
+                        alert('CEP não encontrado.');
+                    }
+                });
+            }
+        });
+
+        // Máscara para CPF
+        $('#id_cpf').mask('000.000.000-00');
+        
+        // Máscara para Celular (com DDD)
+        $('#id_celular').mask('(00) 00000-0000');
+        
+        // Máscara para Telefone fixo (com DDD)
+        $('#id_telefone').mask('(00) 0000-0000');
+        
+        // Máscara para Prefixo (se necessário)
+        $('#id_prefixo').mask('00');
+
+        // Máscara para CEP
+        $('#id_cep').mask('00000-000');
+
+        // Máscara para RG
+        $('#id_rg').mask('000000');
+
+        // Pré-visualização da foto
+        $('#id_foto_perfil').change(function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                $('#preview').attr('src', event.target.result).show();
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    });
+    </script>
+</head>
+
+
+<body>
+    <div class="container">
+        <h1 class="text-center">Trabalhe Conosco</h1>
+        <h5 class="text-center">Dados Pessoais</h5>
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.non_field_errors }}
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.nome.label_tag }}
+                        {{ form.nome|add_class:"form-control" }}
+                        {% if form.nome.errors %}
+                            <div class="text-danger">{{ form.nome.errors }}</div>
+                        {% endif %}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.foto_perfil.label_tag }}
+                        {{ form.foto_perfil|add_class:"form-control" }}
+                        <div class="d-flex align-items-center">
+                            <img id="preview" src="#" alt="Preview da Foto" style="display: none; width: 100px; height: 100px; border: 2px solid #040a5e; border-radius: 4px;"/>
+                        </div>
+                        {% if form.foto_perfil.errors %}
+                            <div class="text-danger">{{ form.foto_perfil.errors }}</div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-6">
+                        {{ form.email.label_tag }}
+                        {{ form.email|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-6">
+                        {{ form.curriculo.label_tag }}
+                        {{ form.curriculo|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.prefixo.label_tag }}
+                        {{ form.prefixo|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.telefone.label_tag }}
+                        {{ form.telefone|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.celular.label_tag }}
+                        {{ form.celular|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.endereco.label_tag }}
+                        {{ form.endereco|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.numero.label_tag }}
+                        {{ form.numero|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.bairro.label_tag }}
+                        {{ form.bairro|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.cep.label_tag }}
+                        <input type="text" name="{{ form.cep.name }}" id="id_cep" class="form-control" value="{{ form.cep.value }}" aria-label="CEP">
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.cidade.label_tag }}
+                        {{ form.cidade|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.estado.label_tag }}
+                        {{ form.estado|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.data_nasc.label_tag }}
+                        {{ form.data_nasc|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.estado_civil.label_tag }}
+                        {{ form.estado_civil|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.rg.label_tag }}
+                        {{ form.rg|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.cpf.label_tag }}
+                        {{ form.cpf|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.sexo.label_tag }}
+                        {{ form.sexo|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.nome_pai.label_tag }}
+                        {{ form.nome_pai|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.nome_mae.label_tag }}
+                        {{ form.nome_mae|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        <label class="me-2">{{ form.possui_habilitacao.label }}</label>
+                        <div class="form-check">
+                            {% for choice in form.possui_habilitacao %}
+                                <label class="form-check-label me-2">
+                                    {{ choice.tag }} {{ choice.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <label class="me-2">{{ form.tipo_habilitacao.label }}</label>
+                        <div class="form-check">
+                            {% for choice in form.tipo_habilitacao %}
+                                <label class="form-check-label me-2">
+                                    {{ choice.tag }} {{ choice.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        <label class="me-2">{{ form.possui_carteira_profissional.label }}</label>
+                        <div class="form-check">
+                            {% for choice in form.possui_carteira_profissional %}
+                                <label class="form-check-label me-2">
+                                    {{ choice.tag }} {{ choice.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.serie_carteira_profissional.label_tag }}
+                        {{ form.serie_carteira_profissional|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.formacao.label_tag }}
+                        {{ form.formacao|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.curso.label_tag }}
+                        {{ form.curso|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.ano_conclusao.label_tag }}
+                        {{ form.ano_conclusao|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.empresa_atual.label_tag }}
+                        {{ form.empresa_atual|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.segmento_atual.label_tag }}
+                        {{ form.segmento_atual|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.cargo_atual.label_tag }}
+                        {{ form.cargo_atual|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.data_inicio_atual.label_tag }}
+                        {{ form.data_inicio_atual|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.data_saida_atual.label_tag }}
+                        {{ form.data_saida_atual|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.empresa_anterior_1.label_tag }}
+                        {{ form.empresa_anterior_1|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.segmento_anterior_1.label_tag }}
+                        {{ form.segmento_anterior_1|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.cargo_anterior_1.label_tag }}
+                        {{ form.cargo_anterior_1|add_class:"form-control" }}
+                    </div>
+                </div>
+            </div>
+    
+            <div class="mb-3">
+                <div class="row">
+                    <div class="col-md-4">
+                        {{ form.data_inicio_anterior_1.label_tag }}
+                        {{ form.data_inicio_anterior_1|add_class:"form-control" }}
+                    </div>
+                    <div class="col-md-4">
+                        {{ form.data_saida_anterior_1.label_tag }}
+                        {{ form.data_saida_anterior_1|add_class:"form-control" }}
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    {{ form.atribuicoes_anterior_1.label_tag }}
+                    {{ form.atribuicoes_anterior_1|add_class:"form-control" }}
+                </div>
+            </div>
+    
+            <div class="text-center">
+                <button type="submit" class="btn btn-primary">Enviar</button>
+            </div>
+        </form>
+    </div>
+    
+    {% endblock %}
+        

@@ -1,0 +1,132 @@
+[
+    {
+        "id": 1,
+        "nome": "Cuiabá - Miguel Sutil",
+        "endereco": "Av. Miguel Sutil, 14299",
+        "bairro": "Porto",
+        "cep": "78025-700",
+        "latitude": -15.601410,
+        "longitude": -56.097891,
+        "imagem": "cuiaba_miguel_sutil.jpg"
+    },
+    {
+        "id": 2,
+        "nome": "Cuiabá - Coxipó",
+        "endereco": "Av. Fernando Corrêa da Costa, 3700 - Coxipó da Ponte",
+        "bairro": "Shangri-lá",
+        "cep": "78015-285",
+        "latitude": -15.594950,
+        "longitude": -56.094874,
+        "imagem": "cuiaba_coxipo.jpg"
+    },
+    {
+        "id": 3,
+        "nome": "Sinop - MT",
+        "endereco": "Av. das Figueiras, 60 - Quadra R-21E",
+        "bairro": "Setor Industrial Norte",
+        "cep": "78557-457",
+        "latitude": -11.864170,
+        "longitude": -55.503130,
+        "imagem": "sinop_mt.jpg"
+    },
+    {
+        "id": 4,
+        "nome": "Rondonópolis - MT",
+        "endereco": "Av. Presidente Médici, 4640",
+        "bairro": "Vila José Luis",
+        "cep": "78705-100",
+        "latitude": -16.471330,
+        "longitude": -54.622220,
+        "imagem": "rondonopolis_mt.jpg"
+    },
+    {
+        "id": 5,
+        "nome": "Várzea Grande - MT",
+        "endereco": "Av. Gov. Júlio Campos, 3881",
+        "bairro": "Centro",
+        "cep": "78110-000",
+        "latitude": -15.646892,
+        "longitude": -56.132621,
+        "imagem": "varzea_grande_mt.jpg"
+    },
+    {
+        "id": 6,
+        "nome": "Cáceres - MT",
+        "endereco": "R. Padre Cassimiro, 1371",
+        "bairro": "Centro",
+        "cep": "78200-000",
+        "latitude": -16.076350,
+        "longitude": -57.681093,
+        "imagem": "caceres_mt.jpg"
+    },
+    {
+        "id": 7,
+        "nome": "Tangará da Serra - MT",
+        "endereco": "Av. Brasil, 1510W",
+        "bairro": "Nações Unidas",
+        "cep": "78300-000",
+        "latitude": -14.619010,
+        "longitude": -57.482829,
+        "imagem": "tangara_mt.jpg"
+    },
+    {
+        "id": 8,
+        "nome": "Cuiabá - CPA III",
+        "endereco": "Rua Trinta e Três, Nº 31 - Quadra 58, Setor III",
+        "bairro": "CPA III",
+        "cep": "78058-300",
+        "latitude": -15.556789,
+        "longitude": -56.094456,
+        "imagem": "cuiaba_cpa_iii.jpg"
+    },
+    {
+        "id": 9,
+        "nome": "Primavera do Leste - MT",
+        "endereco": "Rua Nova Esperança, 18",
+        "bairro": "Cidade Primavera I",
+        "cep": "78850-000",
+        "latitude": -15.551230,
+        "longitude": -54.282672,
+        "imagem": "primavera_do_leste.jpg"
+    },
+    {
+        "id": 10,
+        "nome": "Alta Floresta - MT",
+        "endereco": "Av. Julio José de Campos, s/nº - Quadra B1",
+        "bairro": "Setor Industrial",
+        "cep": "78580-000",
+        "latitude": -9.874320,
+        "longitude": -56.088760,
+        "imagem": "alta_floresta.jpg"
+    },
+    {
+        "id": 11,
+        "nome": "Lucas do Rio Verde - MT",
+        "endereco": "Av. Amazonas, 493-S - Quadra 17 Lote 15",
+        "bairro": "Centro",
+        "cep": "78455-000",
+        "latitude": -13.058215,
+        "longitude": -56.085485,
+        "imagem": "lucas_do_rio_verde.jpg"
+    },
+    {
+        "id": 12,
+        "nome": "Cuiabá - Distrito Indústrial",
+        "endereco": "Av. Fernando Correa da Costa , s/n - Km13",
+        "bairro": "Pascoal Ramos",
+        "cep": "78098-000",
+        "latitude": -15.677850,
+        "longitude": -56.101230,
+        "imagem": "cuiaba_distrito_industrial.jpg"
+    },
+    {
+        "id": 13,
+        "nome": "Água Boa",
+        "endereco": "Av. Industrial, 1730, Lote 01, Qdra 59",
+        "bairro": "Industrial V",
+        "cep": "78635-000",
+        "latitude": -14.055570,
+        "longitude": -52.160092,
+        "imagem": "agua_boa.jpg"
+    }
+]

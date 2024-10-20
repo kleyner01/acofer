@@ -1,0 +1,479 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}
+Trabalhe Conosco
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.mask/1.14.16/jquery.mask.min.js"></script>
+    <script>
+    $(document).ready(function() {
+        // Evento quando o campo de CEP perde o foco (quando o usuário sai do campo)
+        $('#id_cep').blur(function() {
+            var cep = $(this).val().replace(/\D/g, '');
+
+            // Verifica se o CEP tem exatamente 8 dígitos
+            if (cep.length === 8) {
+                // Consulta a API ViaCEP
+                $.getJSON('https://viacep.com.br/ws/' + cep + '/json/', function(dados) {
+                    if (!('erro' in dados)) {
+                        // Preenche os campos de endereço automaticamente
+                        $('#id_endereco').val(dados.logradouro);
+                        $('#id_bairro').val(dados.bairro);
+                        $('#id_cidade').val(dados.localidade);
+                        $('#id_estado').val(dados.uf).change();
+                    } else {
+                        alert('CEP não encontrado.');
+                    }
+                });
+            }
+        });
+        
+        // Máscara para Celular (com DDD)
+        $('#id_celular').mask('(00) 00000-0000');
+        
+        // Máscara para Telefone fixo (com DDD)
+        $('#id_telefone').mask('(00) 0000-0000');
+        
+        // Máscara para Prefixo (se necessário)
+        $('#id_prefixo').mask('00');
+
+        // Máscara para CEP
+        $('#id_cep').mask('00000-000');
+
+        // Máscara para RG
+        $('#id_rg').mask('000000');
+
+        // Pré-visualização da foto
+        $('#id_foto_perfil').change(function(e) {
+            const reader = new FileReader();
+            reader.onload = function(event) {
+                $('#preview').attr('src', event.target.result).show();
+            }
+            reader.readAsDataURL(e.target.files[0]);
+        });
+    });
+    </script>
+</head>
+
+
+    <body>
+        <div class="container">
+            <h1 class="text-center">Trabalhe Conosco</h1>
+            <h5>Dados Pessoais</h5>
+
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Exibir erros de cada campo individualmente -->
+                {% for field in form %}
+                    <div class="form-group">
+                        <div class="text-danger">{{ field.errors }}</div>
+                    </div>
+                {% endfor %}
+
+                <div class="mb-3 d-flex justify-content-between">
+                    {{ form.non_field_errors }}
+
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.nome.label_tag }}
+                        {{ form.nome|add_class:"form-control" }}
+                        {% if form.nome.errors %}
+                        {% endif %}
+                    </div>
+
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.foto_perfil.label_tag }}
+                        {{ form.foto_perfil|add_class:"form-control" }}
+                        {% if form.foto_perfil.errors %}
+                        {% endif %}
+                    </div>
+                        <div class="form-group d-flex align-items-center" style="margin-left: 10px;">
+                            <img id="preview" src="#" alt="Preview da Foto" style="display: none; width: 100px; height: 100px; border: 2px solid #040a5e; border-radius: 4px;"/>
+                        </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.email.label_tag }}
+                        {{ form.email|add_class:"form-control" }}
+                    </div>
+
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.curriculo.label_tag }}
+                        {{ form.curriculo|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.prefixo.label_tag }}
+                        {{ form.prefixo }}
+                    </div>
+
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.telefone.label_tag }}
+                        {{ form.telefone }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.celular.label_tag }}
+                        {{ form.celular }}
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_nasc.label_tag }}
+                        {{ form.data_nasc|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.estado_civil.label_tag }}
+                        {{ form.estado_civil|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.rg.label_tag }}
+                        {{ form.rg|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cpf.label_tag }}
+                        {{ form.cpf|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.sexo.label_tag }}
+                        {{ form.sexo|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.nome_pai.label_tag }}
+                        {{ form.nome_pai|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.nome_mae.label_tag }}
+                        {{ form.nome_mae|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.endereco.label_tag }}
+                        {{ form.endereco|add_class:"form-control" }}
+                    </div>
+            
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.numero.label_tag }}
+                        {{ form.numero|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.bairro.label_tag }}
+                        {{ form.bairro|add_class:"form-control" }}
+                    </div>
+                </div>
+                
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cep.label_tag }}
+                        <input type="text" name="{{ form.cep.name }}" id="id_cep" class="form-control" value="{{ form.cep.value }}">
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cidade.label_tag }}
+                        {{ form.cidade|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.estado.label_tag }}
+                        {{ form.estado|add_class:"form-control" }}
+                    </div>
+                </div>
+            
+                <div class="mb-3 d-flex justify-content-between">
+                    
+                    <!-- Possui Habilitação -->
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        <label class="me-2">{{ form.possui_habilitacao.label }}</label>
+                        <div class="form-group flex-grow-1 mb-3 me-2">
+                            {% for choice in form.possui_habilitacao %}
+                                <label class="inline-radio me-2">
+                                    {{ choice.tag }} {{ choice.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Tipo de Habilitação -->
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        <label class="me-2">{{ form.tipo_habilitacao.label }}</label>
+                        <div class="form-group flex-grow-1 mb-3 me-2" id="tipo-habilitacao-container" style="display: {% if form.possui_habilitacao.value %}block{% else %}none{% endif %};">
+                            {% for checkbox in form.tipo_habilitacao %}
+                                <label class="inline-checkbox me-2">
+                                    {{ checkbox.tag }} {{ checkbox.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <!-- Possui Carteira Profissional -->
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        <label class="me-2">{{ form.possui_carteira_profissional.label }}</label>
+                        <div class="form-group flex-grow-1 mb-3 me-2">
+                            {% for choice in form.possui_carteira_profissional %}
+                                <label class="inline-radio me-2">
+                                    {{ choice.tag }} {{ choice.choice_label }}
+                                </label>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <!-- Série da Carteira Profissional -->
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        <label class="me-2">{{ form.serie_carteira_profissional.label }}</label>
+                        <div id="serie-carteira-input" style="display: none;">
+                            {{ form.serie_carteira_profissional }}  <!-- Deve ser um select -->
+                            <div class="text-danger">{{ form.serie_carteira_profissional.errors }}</div>
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.formacao.label_tag }}
+                        {{ form.formacao|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.curso.label_tag }}
+                        {{ form.curso|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.ano_conclusao.label_tag }}
+                        {{ form.ano_conclusao|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.empresa_atual.label_tag }}
+                        {{ form.empresa_atual|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.segmento_atual.label_tag }}
+                        {{ form.segmento_atual|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cargo_atual.label_tag }}
+                        {{ form.cargo_atual|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_inicio_atual.label_tag }}
+                        {{ form.data_inicio_atual|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_saida_atual.label_tag }}
+                        {{ form.data_saida_atual|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="form-group flex-grow-1 mb-3 me-2">
+                    {{ form.atribuicoes_atual.label_tag }}
+                    {{ form.atribuicoes_atual|add_class:"form-control" }}
+                </div>
+            
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.empresa_anterior_1.label_tag }}
+                        {{ form.empresa_anterior_1|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.segmento_anterior_1.label_tag }}
+                        {{ form.segmento_anterior_1|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cargo_anterior_1.label_tag }}
+                        {{ form.cargo_anterior_1|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_inicio_anterior_1.label_tag }}
+                        {{ form.data_inicio_anterior_1|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_saida_anterior_1.label_tag }}
+                        {{ form.data_saida_anterior_1|add_class:"form-control" }}
+                    </div>
+                </div>
+            
+                <div class="form-group flex-grow-1 mb-3 me-2">
+                    {{ form.atribuicoes_anterior_1.label_tag }}
+                    {{ form.atribuicoes_anterior_1|add_class:"form-control" }}
+                </div>
+            
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.empresa_anterior_2.label_tag }}
+                        {{ form.empresa_anterior_2|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.segmento_anterior_2.label_tag }}
+                        {{ form.segmento_anterior_2|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cargo_anterior_2.label_tag }}
+                        {{ form.cargo_anterior_2|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_inicio_anterior_2.label_tag }}
+                        {{ form.data_inicio_anterior_2|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.data_saida_anterior_2.label_tag }}
+                        {{ form.data_saida_anterior_2|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="form-group flex-grow-1 mb-3 me-2">
+                    {{ form.atribuicoes_anterior_2.label_tag }}
+                    {{ form.atribuicoes_anterior_2|add_class:"form-control" }}
+                </div>
+            
+                <div class="mb-3 d-flex justify-content-between">
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.cargo_pretendido.label_tag }}
+                        {{ form.cargo_pretendido|add_class:"form-control" }}
+                    </div>
+                
+                    <div class="form-group flex-grow-1 mb-3 me-2">
+                        {{ form.faixa_salarial_desejada.label_tag }}
+                        {{ form.faixa_salarial_desejada|add_class:"form-control" }}
+                    </div>
+                </div>
+
+                <div class="form-group flex-grow-1 mb-3 me-2">
+                    {{ form.mensagem.label_tag }}
+                    {{ form.mensagem|add_class:"form-control" }}
+                </div>
+            
+                <button type="submit" class="btn btn-primary">Enviar</button>
+                <a href="{% url 'home' %}">Voltar</a>
+            </form>
+            <script>
+                document.addEventListener('DOMContentLoaded', function () {
+                    const possuiCarteiraRadios = document.querySelectorAll('input[name="possui_carteira_profissional"]');
+                    const possuiHabilitacaoRadios = document.querySelectorAll('input[name="possui_habilitacao"]');
+                    
+                    const serieCarteiraInput = document.getElementById('serie-carteira-input');
+                    const tipoHabilitacaoInput = document.getElementById('tipo-habilitacao-container');
+                    
+                    const serieCarteiraSelect = document.querySelector('select[name="serie_carteira_profissional"]');
+                    const tipoHabilitacaoCheckboxes = document.querySelectorAll('input[name="tipo_habilitacao"]');
+                    const form = document.querySelector('form'); // Adicione isso para selecionar o formulário
+                    
+                    // Função para alternar a visibilidade e limpar os campos
+                    const toggleFields = function () {
+                        // Verifica se possui carteira profissional
+                        const carteiraChecked = document.querySelector('input[name="possui_carteira_profissional"]:checked');
+                        if (carteiraChecked && carteiraChecked.value === 'True') {
+                            serieCarteiraInput.style.display = 'block';
+                        } else {
+                            serieCarteiraSelect.value = '';  // Limpa o valor selecionado
+                            serieCarteiraInput.style.display = 'none';
+                            serieCarteiraSelect.value = ''; // Limpa o valor da seleção
+                        }
+                
+                        // Verifica se possui habilitação
+                        const habilitacaoChecked = document.querySelector('input[name="possui_habilitacao"]:checked');
+                        if (habilitacaoChecked && habilitacaoChecked.value === 'True') {
+                            tipoHabilitacaoInput.style.display = 'block';
+                        } else {
+                            // Limpa as caixas de seleção de habilitação
+                            tipoHabilitacaoCheckboxes.forEach(checkbox => {
+                                checkbox.checked = false;  // Desmarca todos os checkboxes
+                            });
+                            tipoHabilitacaoInput.style.display = 'none';
+                        }
+                    };
+                
+                    // Adiciona validação ao formulário
+                    form.addEventListener('submit', function (event) {
+                        let isValid = true;
+                
+                        // Valida a carteira profissional
+                        const serieCarteiraChecked = document.querySelector('input[name="possui_carteira_profissional"]:checked');
+                        if (serieCarteiraChecked && serieCarteiraChecked.value === 'True') {
+                            if (!serieCarteiraSelect.value) {
+                                isValid = false;
+                                alert('Por favor, selecione uma série da carteira profissional.');
+                            }
+                        }
+                
+                        // Valida a habilitação
+                        const habilitacaoChecked = document.querySelector('input[name="possui_habilitacao"]:checked');
+                        if (habilitacaoChecked && habilitacaoChecked.value === 'True') {
+                            const tipoHabilitacaoChecked = Array.from(tipoHabilitacaoCheckboxes).some(checkbox => checkbox.checked);
+                            if (!tipoHabilitacaoChecked) {
+                                isValid = false;
+                                alert('Por favor, selecione o tipo de habilitação.');
+                            }
+                        }
+                
+                        if (!isValid) {
+                            event.preventDefault(); // Impede o envio do formulário
+                        }
+                    });
+                
+                    // Eventos para alternar a visibilidade dos campos conforme seleção
+                    possuiCarteiraRadios.forEach(radio => {
+                        radio.addEventListener('change', toggleFields);
+                    });
+                
+                    possuiHabilitacaoRadios.forEach(radio => {
+                        radio.addEventListener('change', toggleFields);
+                    });
+                
+                    // Verifica o estado inicial ao carregar a página
+                    toggleFields();                
+            
+                    // Validação do campo CPF
+                    var cpfInput = document.querySelector('input[name="cpf"]');
+                    cpfInput.addEventListener('keypress', function (e) {
+                        var char = String.fromCharCode(e.which);
+                        if (!/^[0-9]*$/.test(char)) {
+                            e.preventDefault();  // Impede a digitação de caracteres não numéricos
+                        }
+                    });
+                });
+            </script>
+                        
+    </body>
+</html>
+{% endblock %}

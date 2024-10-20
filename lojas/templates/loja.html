@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nossas Lojas</title>
+    <link rel="stylesheet" href="{% static 'css/lojas.css' %}">
+</head>
+<body>
+    <h1>Nossas Lojas</h1>
+    <div class="container">
+        {% for loja in lojas %}
+            <div class="loja">
+                <img src="{{ loja.imagem.url }}" alt="{{ loja.nome }}" class="zoom" onclick="openModal(this)" onerror="this.src='{% static 'path/to/default-image.jpg' %}';">
+                <div class="loja-info">
+                    <h3>{{ loja.nome }}</h3>
+                    <p class="texto-align">{{ loja.endereco }}</p>
+                    <p class="texto-reduzido texto-align">{{ loja.bairro }}</p>
+                    <p class="texto-reduzido texto-align">{{ loja.cep }}</p>
+                    <div class="contato-container">
+                        <p class="texto-reduzido bi-telephone fs-4 texto-laranja">{{ loja.telefone }}</p>
+                        <div class="botao-container">
+                            <a href="https://www.google.com/maps/search/?api=1&query={{ loja.endereco|urlencode }}" class="como-chegar" target="_blank">Como Chegar</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>Nenhuma loja cadastrada.</p>
+        {% endfor %}
+    </div>
+
+    <!-- Modal para imagem ampliada -->
+    <div id="myModal" class="modal" onclick="closeModal()">
+        <span class="close" onclick="closeModal()">&times;</span>
+        <img class="modal-content" id="img01">
+    </div>
+
+    <script>
+        function openModal(img) {
+            var modal = document.getElementById("myModal");
+            var modalImg = document.getElementById("img01");
+            modal.style.display = "flex";
+            modalImg.src = img.src;
+        }
+
+        function closeModal() {
+            var modal = document.getElementById("myModal");
+            modal.style.display = "none";
+        }
+    </script>
+    <script>
+        document.addEventListener('contextmenu', function(e) {
+            if (e.target.tagName === 'IMG') {
+                e.preventDefault();
+            }
+        });
+    </script>
+    
+</body>
+{% endblock %}

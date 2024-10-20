@@ -1,0 +1,226 @@
+/* styles.css */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-family: sans-serif;
+    background: linear-gradient(315deg, #ffffff, #d7e1ec);
+}
+
+.wrapper {
+    display: inline-flex;
+    list-style: none;
+}
+
+.wrapper .icon {
+    position: relative;
+    background: #ffffff;
+    border-radius: 50%;
+    padding: 15px;
+    margin: 10px;
+    width: 50px;
+    height: 50%;
+    font-size: 18px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    cursor: pointer;
+    transition: all 0.2s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .tooltip {
+    position: absolute;
+    top: 0;
+    font-size: 14px;
+    background: #ffffff;
+    color: #ffffff;
+    padding: 5px 8px;
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.1);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s cubic-bezier(0.68, -0.265, 1.55);
+}
+
+.wrapper .tooltip::before {
+    position: absolute;
+    content: "";
+    height: 8px;
+    width: 8px;
+    background: #ffffff;
+    bottom: -3px;
+    left: 50%;
+    transform: translate(-50%) rotate(45deg);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.wrapper .icon:hover .tooltip {
+    top: -45px;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+}
+
+.wrapper .icon:hover span,
+.wrapper .icon:hover .tooltip {
+    text-shadow: 0px -1px 0px rgba(0, 0, 0, 0.1);
+}
+
+.wrapper .facebook:hover,
+.wrapper .facebook:hover .tooltip,
+.wrapper .facebook:hover .tooltip::before {
+    background: #1877f2;
+    color: #ffffff;
+}
+
+/* Estilo para Instagram */
+.wrapper .instagram:hover,
+.wrapper .instagram:hover .tooltip,
+.wrapper .instagram:hover .tooltip::before {
+    background: #E1306C;
+    color: #ffffff;
+}
+
+/* Estilo para Twitter */
+.wrapper .twitter:hover,
+.wrapper .twitter:hover .tooltip,
+.wrapper .twitter:hover .tooltip::before {
+    background: #1DA1F2;
+    color: #ffffff;
+}
+
+.wrapper .facebook:hover {
+    background: #1877f2 !important;
+    color: #fff !important;
+}
+
+
+#preview {
+    display: none; /* Inicialmente escondido */
+    width: 45px; /* Largura da imagem */
+    height: 45px; /* Altura da imagem */
+    border: 2px solid #ccc; /* Borda da imagem */
+    border-radius: 4px; /* Cantos arredondados */
+    margin-left: 10px; /* Espaçamento à esquerda da imagem */
+}
+
+.loja img {
+    max-width: 100%;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    pointer-events: none; /* Desabilita interações do mouse */
+}
+
+.header-section {
+    background-image: url("{% static 'path/background/1_81_BNR.jpg' %}");
+    background-size: cover; /* Faz a imagem cobrir toda a navbar */
+    background-position: center; /* Centraliza a imagem */
+    background-repeat: no-repeat; /* Impede que a imagem se repita */
+    height: 70px; /* Ajuste a altura da navbar conforme necessário */
+    color: rgb(255, 255, 255); /* Define a cor do texto para ser branca */
+}
+
+/* Estilo opcional para os links da navbar */
+.header-section .nav-link {
+    color: rgb(66, 66, 66); /* Cor do texto dos links */
+}
+
+/* Estilo para cada coluna */
+.col-md-4 {
+    padding: 15px; /* Espaçamento interno */
+}
+
+/* Estilo para as imagens */
+.zoom {
+    border: 2px solid #ccc; /* Borda cinza claro */
+    border-radius: 5px; /* Cantos arredondados */
+    transition: transform 0.2s; /* Transição suave para o zoom */
+    margin-top: 10px; /* Espaço acima da imagem */
+    margin-bottom: 10px; /* Espaço abaixo da imagem */
+}
+
+/* Efeito de zoom ao passar o mouse */
+.zoom:hover {
+    transform: scale(1.1); /* Aumenta a imagem ao passar o mouse */
+}
+
+.content-wrapper {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* Espaçamento entre texto e vídeo */
+}
+
+.text-section {
+    flex: 1; /* Faz com que o texto ocupe o espaço disponível */
+    max-width: 60%; /* Define a largura máxima do texto (60% da largura do container) */
+}
+
+.video-section {
+    flex: 1; /* Faz com que o vídeo ocupe o espaço restante */
+    max-width: 35%; /* Define a largura máxima do vídeo (35% da largura do container) */
+}
+
+@media (max-width: 768px) {
+    /* Para telas menores, organiza o layout verticalmente */
+    .content-wrapper {
+        flex-direction: column;
+    }
+    .text-section, .video-section {
+        max-width: 100%; /* O texto e o vídeo ocupam 100% da largura em telas pequenas */
+    }
+}
+
+/* Animação da borda brilhante */
+@keyframes glowing-border {
+    0% {
+        box-shadow: 0 0 5px #1900ff, 0 0 10px #00c6ff, 0 0 15px #00c6ff, 0 0 20px #00c6ff;
+    }
+    50% {
+        box-shadow: 0 0 15px #1900ff, 0 0 20px #00c6ff, 0 0 30px #00c6ff, 0 0 40px #00c6ff;
+    }
+    100% {
+        box-shadow: 0 0 5px #1900ff, 0 0 10px #00c6ff, 0 0 15px #00c6ff, 0 0 20px #00c6ff;
+    }
+}
+
+/* Aplicando a animação ao vídeo */
+.video-section video {
+    border-radius: 10px; /* Opcional: arredonda os cantos do vídeo */
+    border: 3px solid transparent;
+    padding: 5px;
+    animation: glowing-border 2s infinite; /* Animação que faz a borda brilhar continuamente */
+    transition: transform 0.3s ease-in-out;
+}
+
+.video-section video:hover {
+    transform: scale(1.05); /* Zoom ao passar o mouse para dar um efeito interativo */
+}
+
+.d-flex {
+    display: flex;
+    align-items: center; /* Alinha verticalmente no centro */
+}
+
+.me-2 {
+    margin-right: 0.5rem; /* Margem à direita */
+}
+
+.inline-radio,
+.inline-checkbox {
+    margin-right: 1rem; /* Margem à direita para os rótulos */
+}
+
+.custom-input {
+    width: calc(100% - 1rem); /* Ajusta a largura para 100% menos um pouco para as margens */
+    padding: 0.5rem; /* Aumenta o preenchimento interno */
+    margin: 0.5rem 0; /* Margem superior e inferior */
+}

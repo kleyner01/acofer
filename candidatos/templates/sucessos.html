@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+{% load form_tags %}
+
+{% block title %}
+Trabalhe Conosco - Sucesso
+{% endblock %}
+
+{% load static %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="text-center">
+            <h1>Cadastro Realizado com Sucesso!</h1>
+            <p class="lead">Seu cadastro foi enviado e está sendo processado. Obrigado por se candidatar!</p>
+            
+            <!-- Imagem centralizada -->
+            <img src="{% static 'images/sucessos/sucesso.png' %}" alt="Sucesso" class="img-fluid" style="max-width: 500px;">
+            <img src="{% static 'images/sucessos/01.png' %}" alt="Sucesso" class="img-fluid" style="max-width: 500px;">
+            <div class="mt-4">
+                <a href="{% url 'home' %}" class="btn btn-primary">Voltar para Home</a>
+            </div>
+        </div>
+    </div>
+{% endblock %}
