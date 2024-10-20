@@ -53,7 +53,7 @@ class Candidato(models.Model):
         ('SE', 'Sergipe'),
         ('TO', 'Tocantins'),
     ]
-    
+
     class Sexo(models.TextChoices):
         MASCULINO = 'M', 'Masculino'
         FEMININO = 'F', 'Feminino'
@@ -63,7 +63,6 @@ class Candidato(models.Model):
         SOLTEIRO = 'SOLTEIRO', 'Solteiro'
         DIVORCIADO = 'DIVORCIADO', 'Divorciado'
 
-        
     class Formacao(models.TextChoices):
         NULL = '', 'Selecione Opções'
         FUNDAMENTAL = 'FL', 'Fundamental'

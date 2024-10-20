@@ -1,6 +1,7 @@
 from django.contrib import admin
 from .models import Candidato
 
+
 @admin.register(Candidato)
 class CandidatoAdmin(admin.ModelAdmin):
 
@@ -9,9 +10,7 @@ class CandidatoAdmin(admin.ModelAdmin):
     list_filter = ('estado_civil', 'sexo', 'estado', 'formacao')
     ordering = ('nome',)
 
-
     list_editable = ('telefone', 'cargo_pretendido')
-
 
     fieldsets = (
         ('Informações Pessoais', {

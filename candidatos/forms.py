@@ -7,8 +7,8 @@ class CandidatoForm(forms.ModelForm):
     possui_habilitacao = forms.ChoiceField(choices=[(True, 'Sim'), (False, 'Não')], widget=forms.RadioSelect)
     tipo_habilitacao = forms.MultipleChoiceField(choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')], widget=forms.CheckboxSelectMultiple, required=False)
     possui_carteira_profissional = forms.ChoiceField(choices=[(True, 'Sim'), (False, 'Não')], widget=forms.RadioSelect)
-    serie_carteira_profissional = forms.ChoiceField(choices=[('A', 'Série A'), ('B', 'Série B'), ('C', 'Série C'), ('D', 'Série D'),] , widget=forms.Select, required=False )
-    
+    serie_carteira_profissional = forms.ChoiceField(choices=[('A', 'Série A'), ('B', 'Série B'), ('C', 'Série C'), ('D', 'Série D'),], widget=forms.Select, required=False)
+
     class Meta:
         model = models.Candidato
         fields = '__all__'
@@ -127,7 +127,6 @@ class CandidatoForm(forms.ModelForm):
         if len(cpf) != 11 or not cpf.isdigit():
             return False
 
-
         soma = 0
         for i in range(9):
             soma += int(cpf[i]) * (10 - i)
@@ -136,7 +135,6 @@ class CandidatoForm(forms.ModelForm):
 
         if int(cpf[9]) != primeiro_digito:
             return False
-
 
         soma = 0
         for i in range(10):
@@ -161,7 +159,7 @@ class CandidatoForm(forms.ModelForm):
 
         if possui_habilitacao == 'True' and not tipo_habilitacao:
             raise forms.ValidationError('Por favor, selecione pelo menos um tipo de habilitação.')
-        
+
         return tipo_habilitacao
 
     def clean_possui_carteira_profissional(self):
@@ -176,23 +174,19 @@ class CandidatoForm(forms.ModelForm):
 
         if possui_carteira_profissional == 'True' and not serie_carteira_profissional:
             raise forms.ValidationError("Por favor, escolha uma série válida da carteira profissional.")
-        
+
         return serie_carteira_profissional
 
     def clean(self):
         cleaned_data = super().clean()
 
         possui_habilitacao = cleaned_data.get('possui_habilitacao')
-        tipo_habilitacao = cleaned_data.get('tipo_habilitacao')
         possui_carteira_profissional = cleaned_data.get('possui_carteira_profissional')
-        serie_carteira_profissional = cleaned_data.get('serie_carteira_profissional')
 
-        # Se não possui habilitação, limpar tipo_habilitacao
         if possui_habilitacao == 'False':
-            cleaned_data['tipo_habilitacao'] = None  # ou ''
+            cleaned_data['tipo_habilitacao'] = None
 
-        # Se não possui carteira profissional, limpar serie_carteira_profissional
         if possui_carteira_profissional == 'False':
-            cleaned_data['serie_carteira_profissional'] = None  # ou ''
+            cleaned_data['serie_carteira_profissional'] = None
 
         return cleaned_data

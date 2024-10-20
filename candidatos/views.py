@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from .forms import CandidatoForm
 from django.contrib import messages
 
+
 def CandidatoListView(request):
     if request.method == 'POST':
         form = CandidatoForm(request.POST, request.FILES)
@@ -20,6 +21,7 @@ def CandidatoListView(request):
         form = CandidatoForm()
 
     return render(request, 'trabalhe_conoscos.html', {'form': form})
+
 
 def SucessosView(request):
     return render(request, 'sucessos.html')

@@ -2,6 +2,7 @@ from django import forms
 from django.core.exceptions import ValidationError
 from .models import Loja, formatar_endereco
 
+
 class LojaForm(forms.ModelForm):
     class Meta:
         model = Loja
